@@ -20,6 +20,7 @@
 
 #include <stddef.h>
 #include <stdarg.h>
+#include "stdint.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // These functions must be implemented by a program that uses udynlink
