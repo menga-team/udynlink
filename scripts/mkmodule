@@ -36,8 +36,8 @@ def make_symbols_local(obj, symlist, args):
 
 def assemble(src_name, args):
     path, fname, ext = split_fname(src_name)
-    objname = fname + ".o"
-    asm_data = {"input": src_name, "output": os.path.join(path, objname)}
+    objname = os.path.join(path, fname + ".o")
+    asm_data = {"input": src_name, "output": objname}
     debug("Assembling '%s'" % src_name, args)
     execute("arm-none-eabi-gcc " + asm_cmd.format(**asm_data), args)
     return objname
@@ -377,7 +377,7 @@ parser.add_argument("--gen-c-header", dest="gen_c_header", action="store_true",
                     help="Generate the C header after processing (default: false)")
 parser.add_argument("--header-path", dest="header_path", default=".",
                     help="Path for the generated header (default: current dir)")
-parser.add_argument("--name", dest="name", default=None,
+parser.add_argument("--name", dest="name", default="game",
                     help="Module name (default is inferred from the namae of first source)")
 parser.add_argument("--includes", dest="includes", default=None)
 args, rest = parser.parse_known_args()
