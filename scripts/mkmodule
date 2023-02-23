@@ -64,17 +64,21 @@ def compile(src_name, args, redefine_symbols=True, macros=[]):
     if redefine_symbols:
         # Generate temporary object file with renamed symbols
         global_funcs = get_public_functions_in_object(objname)
-        debug("Generating temporary object files with wrapped symbols '%s'" % ", ".join(global_funcs), args)
+        local_symbols = get_local_symbols_in_object(objname)
+        redefine = [*global_funcs, *local_symbols]
+        debug("Generating temporary object files with wrapped symbols '%s'" % ", ".join(redefine), args)
         temp_obj = os.path.join(path, fname + '.temp.o')
         os.rename(objname, temp_obj)
         sym_renames.clear()
-        sym_renames.update({n: get_wrapped_name(n) for n in global_funcs})
+        sym_renames.update({n: get_wrapped_name(src_name, n) for n in redefine})
         rename_symbols(temp_obj, objname, sym_renames, args)
         # Generate ASM for prologue
         debug("Generating ASM file for public function prologues", args)
         loader = FileSystemLoader(os.path.dirname(os.path.abspath(__file__)))
         env = Environment(loader=loader)
         tmpl = env.get_template("asm_template.tmpl")
+        sym_renames.clear()
+        sym_renames.update({n: get_wrapped_name(src_name, n) for n in global_funcs})
         data = tmpl.render({"sym_names": sym_renames})
         p_fname = os.path.join(path, fname + "_prologue.s")
         with open(p_fname, "wt") as f:

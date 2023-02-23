@@ -80,9 +80,9 @@ def change_ext(name, new_ext):
     return os.path.join(path, fname + new_ext)
 
 
-def get_wrapped_name(n):
-    s = hashlib.md5(n.encode('utf-8')).hexdigest()
-    return "__%s__%s" % (s[:9], n)
+def get_wrapped_name(file, n):
+    s = hashlib.md5(file.encode('utf-8')).hexdigest()
+    return "__%s__%s" % (s, n)
 
 
 debug_col = 'blue'
@@ -159,6 +159,10 @@ def get_symbols_in_elf(obj):
 # TODO: also consider weak functions here?
 def get_public_functions_in_object(obj):
     return [s for s, d in get_symbols_in_elf(obj).items() if d["type"] == "STT_FUNC" and d["bind"] == "STB_GLOBAL"]
+
+
+def get_local_symbols_in_object(obj):
+    return [s for s, d in get_symbols_in_elf(obj).items() if d["bind"] == "STB_LOCAL" and s.startswith(".")]
 
 
 def get_relocations_in_elf(obj):
