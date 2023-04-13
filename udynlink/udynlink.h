@@ -101,6 +101,12 @@ typedef enum {
 } udynlink_error_t;
 #undef _UDYNLINK_EXPAND
 
+#define _UDYNLINK_EXPAND(x)                   #x"\n"
+static const char * const error_codes[] = {
+    UDYNLINK_ERROR_CODES
+};
+#undef _UDYNLINK_EXPAND
+
 // Debug levels for udynlink_debug (order is important!)
 // If this enum is modified, the correponding array in udynlink_debug must also be modified!
 typedef enum {

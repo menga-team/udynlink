@@ -19,12 +19,6 @@
 static udynlink_module_t module_table[UDYNLINK_MAX_HANDLES];
 static udynlink_debug_level_t debug_level;
 
-#define _UDYNLINK_EXPAND(x)                   #x"\n"
-static const char * const error_codes[] = {
-    UDYNLINK_ERROR_CODES
-};
-#undef _UDYNLINK_EXPAND
-
 // Symbol table masks and data
 #define UDYNLINK_SYM_OFFSET_MASK              0x0FFFFFFF
 #define UDYNLINK_SYM_INFO_SHIFT               28
